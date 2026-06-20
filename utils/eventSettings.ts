@@ -1,5 +1,5 @@
 // utils/eventSettings.ts
-import { supabase } from "../lib/supabase";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 export async function isSlugGenerationEnabled(): Promise<boolean> {
   const { data, error } = await supabase
