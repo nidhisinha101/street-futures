@@ -22,7 +22,21 @@ export function SubmitPage() {
 
     setIsSubmitting(true);
     const eventActive = await isSlugGenerationEnabled();
-    const slug = eventActive ? await generateUniqueSlug(supabase) : null;
+
+    let slug: string | null = null;
+    if (eventActive) {
+      try {
+        slug = await generateUniqueSlug(supabase);
+        if (!slug) {
+          throw new Error("Generated slug was empty");
+        }
+      } catch (slugError) {
+        console.error("Error generating story token:", slugError);
+        toast.error("Could not generate a story token. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
+    }
 
     try {
       const submissionPayload = {
@@ -34,14 +48,14 @@ export function SubmitPage() {
         .from("submissions")
         .insert(submissionPayload)
         .select("token_id")
-        .maybeSingle();
+        .single();
 
       if (error) {
         toast.error("Failed to submit: " + error.message);
         return;
       }
 
-      const token = data?.token_id ?? null;
+      const token = slug ?? data?.token_id ?? null;
       if (token) {
         setGeneratedSlug(token);
         toast.success("Your unique story token has been generated.");

@@ -9,5 +9,5 @@ export async function isSlugGenerationEnabled(): Promise<boolean> {
     .maybeSingle();
 
   if (error || !data) return false; // fail closed: no slug if we can't confirm
-  return data.token_gen_enabled;
+  return Boolean(data.token_gen_enabled);
 }
