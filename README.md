@@ -1,6 +1,1 @@
-# Running the code
-
-  Run `npm i` to install the dependencies.
-
-  Run `npm run dev` to start the development server.
-  
+This website has been deployed on Netlify to encourage people to reflect on what makes their streets safer.
