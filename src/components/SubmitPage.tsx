@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { toast } from "sonner";
 import { supabase } from "../lib/supabase";
+import { generateUniqueSlug } from "../../utils/slug";
+import { isSlugGenerationEnabled } from "../../utils/eventSettings";
 
 export function SubmitPage() {
   const navigate = useNavigate();
   const [content, setContent] = useState("");
+  const [generatedSlug, setGeneratedSlug] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,23 +21,37 @@ export function SubmitPage() {
     }
 
     setIsSubmitting(true);
+    const eventActive = await isSlugGenerationEnabled();
+    const slug = eventActive ? await generateUniqueSlug(supabase) : null;
 
     try {
-      const { error } = await supabase.from("submissions").insert({
-        content: content.trim(),
-      });
+      const { data, error } = await supabase
+        .from("submissions")
+        .insert({
+          content: content.trim(),
+          token_id: slug,
+        })
+        .select("token_id")
+        .maybeSingle();
 
       if (error) {
         toast.error("Failed to submit: " + error.message);
         return;
       }
 
-      toast.success("Your vision has been planted in the archive.");
-      setContent("");
+      const token = data?.token_id ?? null;
+      if (token) {
+        setGeneratedSlug(token);
+        toast.success("Your unique story token has been generated.");
+      } else {
+        setGeneratedSlug(null);
+        toast.success("Your vision has been stored in the archive.");
+        setTimeout(() => {
+          navigate("/view-all");
+        }, 1500);
+      }
 
-      setTimeout(() => {
-        navigate("/view-all");
-      }, 1500);
+      setContent("");
     } catch (err) {
       toast.error("An error occurred while submitting.");
       console.error(err);
@@ -122,6 +139,19 @@ export function SubmitPage() {
               </button>
             </div>
           </form>
+
+          {generatedSlug ? (
+            <div className="mt-10 rounded-3xl border border-current/10 bg-background/80 p-6">
+              <p className="font-sans text-xs tracking-widest uppercase mb-3 text-foreground/70">
+                Story token generated
+              </p>
+              <div className="rounded-2xl bg-foreground/5 p-5">
+                <p className="font-mono text-lg tracking-[0.22em] text-foreground/90 break-all">
+                  {generatedSlug}
+                </p>
+              </div>
+            </div>
+          ) : null}
         </motion.div>
       </div>
     </div>

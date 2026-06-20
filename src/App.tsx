@@ -22,6 +22,7 @@ export default function App() {
           <Route path="/view-all" element={<GalleryPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/submit" element={<SubmitPage />} />
+          <Route path="/s/:slug" element={<HomePage ref={homePageRef} />} />
         </Routes>
         <Navigation onShuffle={handleShuffle} />
         <Toaster />

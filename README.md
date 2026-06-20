@@ -1,1 +1,1 @@
-This website has been deployed on Netlify to encourage people to reflect on what makes their streets safer.
+A digital archive for people to store their visions of their future streets.

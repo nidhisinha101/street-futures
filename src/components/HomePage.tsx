@@ -1,41 +1,68 @@
 import { useState, useEffect, useImperativeHandle, forwardRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { supabase, Submission } from "../lib/supabase";
+import { useParams } from "react-router-dom";
 
 export interface HomePageRef {
   shuffle: () => void;
 }
 
 export const HomePage = forwardRef<HomePageRef>((props, ref) => {
+  const { slug } = useParams<{ slug?: string }>();
   const [currentSubmission, setCurrentSubmission] = useState<Submission | null>(null);
-  const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [isShuffling, setIsShuffling] = useState(false);
 
-  const loadRandomSubmission = () => {
-    if (isShuffling || submissions.length === 0) return;
+  const loadRandomSubmission = async () => {
     setIsShuffling(true);
-
-    setTimeout(() => {
-      const randomIndex = Math.floor(Math.random() * submissions.length);
-      setCurrentSubmission(submissions[randomIndex]);
-      setIsShuffling(false);
-    }, 350);
-  };
-
-  const fetchSubmissions = async () => {
-    const { data, error } = await supabase
-      .from("submissions")
-      .select("*")
-      .order("created_at", { ascending: false });
+    const { data, error } = await supabase.from("submissions").select("*");
 
     if (error) {
       console.error("Error fetching submissions:", error);
+      setIsShuffling(false);
       return;
     }
 
-    if (data) {
-      setSubmissions(data);
+    if (data && data.length > 0) {
+      const randomIndex = Math.floor(Math.random() * data.length);
+      setCurrentSubmission(data[randomIndex]);
     }
+
+    setIsShuffling(false);
+  };
+
+  const loadSubmissionBySlug = async (slugValue: string) => {
+    setIsShuffling(true);
+    const { data, error } = await supabase
+      .from("submissions")
+      .select("*")
+      .eq("token_id", slugValue)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error fetching submission by slug:", error);
+      setIsShuffling(false);
+      return false;
+    }
+
+    if (data) {
+      setCurrentSubmission(data);
+      setIsShuffling(false);
+      return true;
+    }
+
+    setIsShuffling(false);
+    return false;
+  };
+
+  const loadInitialSubmission = async () => {
+    if (slug) {
+      const found = await loadSubmissionBySlug(slug);
+      if (found) {
+        return;
+      }
+    }
+
+    await loadRandomSubmission();
   };
 
   useImperativeHandle(ref, () => ({
@@ -43,15 +70,8 @@ export const HomePage = forwardRef<HomePageRef>((props, ref) => {
   }));
 
   useEffect(() => {
-    fetchSubmissions();
-  }, []);
-
-  useEffect(() => {
-    if (!currentSubmission && submissions.length > 0) {
-      const randomIndex = Math.floor(Math.random() * submissions.length);
-      setCurrentSubmission(submissions[randomIndex]);
-    }
-  }, [submissions, currentSubmission]);
+    loadInitialSubmission();
+  }, [slug]);
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-6 sm:px-12 pb-32 relative overflow-hidden">
