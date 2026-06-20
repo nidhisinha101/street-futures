@@ -19,7 +19,7 @@ export default function App() {
       <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
         <Routes>
           <Route path="/" element={<HomePage ref={homePageRef} />} />
-          <Route path="/view all" element={<GalleryPage />} />
+          <Route path="/view-all" element={<GalleryPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/submit" element={<SubmitPage />} />
         </Routes>

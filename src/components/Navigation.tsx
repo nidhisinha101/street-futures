@@ -45,9 +45,9 @@ export function Navigation({ onShuffle }: NavigationProps) {
 
         <div className="w-px h-5 mx-1" style={{ background: "color-mix(in srgb, var(--foreground) 10%, transparent)" }} />
 
-        <Link to="/view all" className={`${linkBase} flex items-center gap-2 ${isActive("/view all") ? linkActive : linkInactive}`}
-          style={isActive("/view all") ? { background: "color-mix(in srgb, var(--foreground) 8%, transparent)" } : {}}>
-          {isActive("/view all") && <span style={{ color: "var(--kiln, #c4824a)", fontSize: "0.9rem" }}>✦</span>}
+        <Link to="/view-all" className={`${linkBase} flex items-center gap-2 ${isActive("/view-all") ? linkActive : linkInactive}`}
+          style={isActive("/view-all") ? { background: "color-mix(in srgb, var(--foreground) 8%, transparent)" } : {}}>
+          {isActive("/view-all") && <span style={{ color: "var(--kiln, #c4824a)", fontSize: "0.9rem" }}>✦</span>}
           Gallery
         </Link>
         <Link to="/about" className={`${linkBase} flex items-center gap-2 ${isActive("/about") ? linkActive : linkInactive}`}
