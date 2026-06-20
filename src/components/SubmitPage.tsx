@@ -65,7 +65,7 @@ export function SubmitPage() {
             <p className="font-sans text-xs tracking-widest uppercase mb-3" style={{ color: "var(--foreground)", opacity: 0.4 }}>Prompts for Reflection</p>
             <ul className="font-serif italic text-foreground/55 space-y-2 text-md list-none">
               <li>Describe a day on your safe street. What do you see, hear, smell, or feel? </li>
-              <li>How would you build trust with your neighbors? Who is included in your vision of community?</li>
+              <li>What helped you build trust with your neighbors? Who is included in your vision of community?</li>
               <li>How have you seen your neighborhood change over time? How do you want to see it evolve over the next 5 years?</li>
               <li>What technology could you imagine making your city a more fun place to live, a safer place to be? What technology would not exist in this vision?</li>
             </ul>
