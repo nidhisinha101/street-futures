@@ -25,12 +25,14 @@ export function SubmitPage() {
     const slug = eventActive ? await generateUniqueSlug(supabase) : null;
 
     try {
+      const submissionPayload = {
+        content: content.trim(),
+        ...(slug ? { token_id: slug } : {}),
+      };
+
       const { data, error } = await supabase
         .from("submissions")
-        .insert({
-          content: content.trim(),
-          token_id: slug,
-        })
+        .insert(submissionPayload)
         .select("token_id")
         .maybeSingle();
 
@@ -147,7 +149,7 @@ export function SubmitPage() {
               </p>
               <div className="rounded-2xl bg-foreground/5 p-5">
                 <p className="font-mono text-lg tracking-[0.22em] text-foreground/90 break-all">
-                  {generatedSlug}
+                  {`${window.location.origin}/s/${generatedSlug}`}
                 </p>
               </div>
             </div>
