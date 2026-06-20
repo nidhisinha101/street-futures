@@ -1,0 +1,81 @@
+:root {
+  --font-size: 16px;
+
+  --clay-slip:      #ede5d8;
+  --clay-raw:       #c4a882;
+  --clay-fired:     #7a6858;
+  --cipher:         #1a1a2e;
+  --void:           #162820;
+  --deep:           #1e2e48;
+  --signal:         #5a8a6a;
+  --glow:           #4ab898;
+  --canopy:         #2e4438;
+  --kiln:           #c4824a;
+
+  --background:     #ede5d8;
+  --foreground:     #1a1a2e;
+  --card:           #e4dace;
+  --card-foreground: #1a1a2e;
+  --popover:        #e4dace;
+  --popover-foreground: #1a1a2e;
+  --primary:        #1a1a2e;
+  --primary-foreground: #ede5d8;
+  --secondary:      #ddd4c4;
+  --secondary-foreground: #1a1a2e;
+  --muted:          #ddd4c4;
+  --muted-foreground: #7a6858;
+  --accent:         #c4824a;
+  --accent-foreground: #ede5d8;
+  --destructive:    #c0392b;
+  --destructive-foreground: #ede5d8;
+  --border:         rgba(26, 26, 46, 0.12);
+  --input:          transparent;
+  --input-background: #ddd4c4;
+  --switch-background: #c4a882;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring:           #5a8a6a;
+  --radius:         0.625rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background:     #1a1a2e;
+    --foreground:     #ede5d8;
+    --card:           #1e2038;
+    --card-foreground: #ede5d8;
+    --popover:        #1e2038;
+    --popover-foreground: #ede5d8;
+    --primary:        #ede5d8;
+    --primary-foreground: #1a1a2e;
+    --secondary:      #252540;
+    --secondary-foreground: #ede5d8;
+    --muted:          #252540;
+    --muted-foreground: #c4a882;
+    --accent:         #4ab898;
+    --accent-foreground: #1a1a2e;
+    --destructive:    #e05c4a;
+    --destructive-foreground: #ede5d8;
+    --border:         rgba(237, 229, 216, 0.1);
+    --input:          transparent;
+    --input-background: #252540;
+    --switch-background: #2e4438;
+    --ring:           #4ab898;
+  }
+}
+
+* {
+  border-color: var(--border);
+  box-sizing: border-box;
+}
+
+html {
+  font-size: var(--font-size);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: "Fraunces", serif;
+  -webkit-font-smoothing: antialiased;
+}
